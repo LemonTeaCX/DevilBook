@@ -1,7 +1,11 @@
 <template>
   <div class="blog-Detail">
     <h3 class="tac">{{blog.name}}</h3>
-    <div class="article" v-html="blog.article"></div>
+    <div class="article">
+      <mavon-editor v-model="blog.article"
+        :externalLink="false"/>
+        <!-- :toolbarsFlag="false" :editable="false" :subfield="false"/> -->
+    </div>
   </div>
 </template>
 
