@@ -3,10 +3,10 @@
     <el-row class="form-box">
       <el-col :span="12">
         <el-row :gutter="12">
-          <el-col :span="8">
+          <el-col :span="12">
             <el-input
               v-model="searchVal"
-              placeholder="请输入搜索内容"
+              placeholder="请输入姓名或邮箱进行搜索"
               prefix-icon="el-icon-search"
               size="small"
               clearable>
@@ -21,7 +21,7 @@
       <el-col :span="12">
         <el-row type="flex" justify="end">
           <el-button size="small" type="primary" @click="jumpAccountEdit(0)">添加</el-button>
-          <el-button size="small" type="danger" @click="delAccountBatch()">删除</el-button>
+          <el-button size="small" type="danger" @click="delAccount(tableDataChecked)">删除</el-button>
         </el-row>
       </el-col>
     </el-row>
@@ -37,6 +37,7 @@
       <el-table
         :data="tableData"
         :height="tableHeight"
+        @selection-change="checkedChange"
         border
         highlight-current-row
         >
@@ -81,7 +82,7 @@
             <el-button
               size="mini"
               type="danger"
-              @click="delAccount(scope.row)">删除</el-button>
+              @click="delAccount([scope.row])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -110,6 +111,7 @@ export default {
       pageSize: 5,
       pageSizes: [5, 10, 20, 50, 100],
       tableData: [],
+      tableDataChecked: [],
       total: 0
     };
   },
@@ -136,6 +138,9 @@ export default {
       this.tableData = res.data.list;
       this.total = res.data.total;
     },
+    checkedChange(arr) {
+      this.tableDataChecked = arr;
+    },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
       this.searchList();
@@ -143,23 +148,6 @@ export default {
     handleCurrentChange(pageIndex) {
       this.pageIndex = pageIndex;
       this.searchList();
-    },
-    delAccount(row) {
-      let _this = this;
-
-      _this.$confirm(`此操作将永久删除"${row.name}"该账号，是否继续？`, '提示', {
-        comfirmButtonTex: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async () => {
-        let result = await delAccount({ids: [row.id]});
-
-        _this.$message({
-          message: result.msg,
-          type: result.result ? 'success' : 'error'
-        });
-        this.searchList();
-      }).catch(() => {});
     },
     jumpAccountEdit(id = 0) {
       let query = {};
@@ -169,9 +157,36 @@ export default {
         query: query
       });
     },
-    delAccountBatch() {
-      console.log(this.multipleSelection);
-    }
+    delAccount(data) {
+      let [_this, names, ids] = [this, [], []];
+
+      if (data.length === 0) {
+        _this.$message({
+          message: '请至少选择一条数据进行删除操作',
+          type: 'error'
+        });
+        return ;
+      }
+
+      data.forEach(item => {
+        names.push(item.name);
+        ids.push(item.id);
+      });
+
+      _this.$confirm(`此操作将永久删除"${names.join('、')}"该账号，是否继续？`, '提示', {
+        comfirmButtonTex: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        let result = await delAccount({ids: ids});
+
+        _this.$message({
+          message: result.msg,
+          type: result.result ? 'success' : 'error'
+        });
+        this.searchList();
+      }).catch(() => {});
+    },
   }
 }
 </script>
