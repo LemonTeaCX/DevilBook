@@ -221,6 +221,7 @@ router.post('/login', (req, res, next) => {
 		  	result: false
 		  }));
 	  };
+	  delete userInfo.password;
 	  return res.json(mergeRes({
 	  	msg: '登录成功',
 	  	result: true,
@@ -267,6 +268,21 @@ router.post('/getBlogs', (req, res, next) => {
 	let { id } = req.body;
  	let sqlId = id ? `WHERE(id = '${id}');` : '';
  	let sql = `SELECT * FROM blogs ${sqlId};`;
+
+	connection.query(sql, (error, results, fields) => {
+	  if (error) throw error;
+	  return res.json({
+	  	data: results,
+	  	result: true
+	  });
+	});
+});
+
+// 获取前端组件
+router.post('/getComps', (req, res, next) => {
+	let { id } = req.body;
+ 	let sqlId = id ? `WHERE(id = '${id}');` : '';
+ 	let sql = `SELECT * FROM comps ${sqlId};`;
 
 	connection.query(sql, (error, results, fields) => {
 	  if (error) throw error;
