@@ -5,3 +5,9 @@ export const getBlogs = (parms) => ajax({
 	method: 'post',
 	data: parms
 });
+
+export const getComps = (parms) => ajax({
+	url: '/api/getComps',
+	method: 'post',
+	data: parms
+});
