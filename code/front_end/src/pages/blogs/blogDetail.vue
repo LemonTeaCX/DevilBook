@@ -1,18 +1,16 @@
 <template>
-  <div class="blog-Detail">
-    <h3 class="tac">{{blog.name}}</h3>
-    <div class="article">
-      <mavon-editor v-model="blog.article"
-        :externalLink="false"/>
-        <!-- :toolbarsFlag="false" :editable="false" :subfield="false"/> -->
-    </div>
+  <div>
+    <detail-view :detail="blog"></detail-view>
   </div>
 </template>
 
 <script>
 import { getBlogs } from '../../api';
+import DetailView from '../../components/detailView';
+
 export default {
   name: 'BlogDetail',
+  components: { DetailView },
   data() {
     return {
       id: 0,
@@ -20,16 +18,14 @@ export default {
     }
   },
   mounted() {
-    this.initBlogs();
+    this.initBlog();
   },
   methods: {
-    async initBlogs() {
+    async initBlog() {
       this.id = this.$route.query.id ? +this.$route.query.id : 0;
-
       if (!this.id) return;
 
       let result = await getBlogs({id: this.id});
-
       if (result.data && result.data[0]) this.blog = result.data[0];
     }
   }
@@ -37,13 +33,4 @@ export default {
 </script>
 
 <style lang="less">
-.blog-Detail {
-  margin: 30px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  box-shadow: 0 0 20px #ccc;
-}
-.article {
-  padding: 15px;
-}
 </style>
