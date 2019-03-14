@@ -9,6 +9,8 @@ import AccountEdit from '../pages/system/accountEdit'
 import Auth from '../pages/system/auth'
 import BlogList from '../pages/blogs/blogList'
 import BlogDetail from '../pages/blogs/blogDetail'
+import CompList from '../pages/blogs/compList'
+import CompDetail from '../pages/blogs/compDetail'
 
 Vue.use(Router);
 
@@ -37,6 +39,14 @@ export default new Router({
         {
           path: '/blogs/blogDetail',
           component: BlogDetail
+        },
+        {
+          path: '/blogs/compList',
+          component: CompList
+        },
+        {
+          path: '/blogs/compDetail',
+          component: CompDetail
         }
       ]
     },
