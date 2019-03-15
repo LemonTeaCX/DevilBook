@@ -8,5 +8,6 @@ export const getMenu = () => ajax({
 
 export * from './login';
 export * from './register';
+export * from './edit';
 export * from './system';
 export * from './blogs';
