@@ -208,6 +208,41 @@ router.post('/getMenuList', (req, res, next) => {
 	});
 });
 
+// 编辑菜单
+router.post('/editMenu', (req, res, next) => {
+	let menus = req.body;
+	let sqlValues = [];
+	menus.forEach(item => {
+		sqlValues.push(`(${item.id}, ${item.parent_id}, '${item.menu}', '${item.icon}', '${item.path}')`);
+	});
+ 	let sqlDel = `DELETE FROM menu;`;
+ 	let sqlAdd = `INSERT INTO menu (id, parent_id, menu, icon, path) VALUES ${sqlValues.join(',')};`;
+
+	connection.query(sqlDel + sqlAdd, (error, results, fields) => {
+	  if (error) throw error;
+
+	  return res.json(mergeRes({
+	  	result: true,
+	  	msg: '更新系统菜单成功,刷新页面可看到效果'
+	  }));
+	});
+});
+
+// 删除菜单
+router.post('/delMenu', (req, res, next) => {
+	let { ids } = req.body;
+	ids = ids.join(',');
+ 	let sql = `DELETE FROM menu WHERE(id in (${ids}));`;
+	connection.query(sql, (error, results, fields) => {
+	  if (error) throw error;
+
+	  return res.json(mergeRes({
+	  	msg: '删除菜单成功',
+	  	result: true
+	  }));
+	});
+});
+
 // 登录
 router.post('/login', (req, res, next) => {
 	let {

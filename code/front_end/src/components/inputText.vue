@@ -1,7 +1,7 @@
 <template>
   <div class="input-text">
-    <div v-if="!editing" @click="startEdit">{{value}}</div>
-    <el-input v-else v-model="value" size="small" @blur="endEdit"></el-input>
+    <div class="text" v-if="!editing" @click="startEdit">{{value}}</div>
+    <el-input v-else v-model="value" size="small" ref="inputRef" @blur="endEdit"></el-input>
   </div>
 </template>
 
@@ -9,11 +9,11 @@
 export default {
   name: 'InputText',
   props: {
-    text: [String, Number, Boolean],
+    text: [String, Number],
   },
   data() {
     return {
-      value: '',
+      value: null,
       editing: false
     }
   },
@@ -23,16 +23,28 @@ export default {
   methods: {
     startEdit() {
       this.editing = true;
+      this.$nextTick(() => {
+        this.$refs.inputRef.focus();
+      });
     },
     endEdit() {
       this.editing = false;
+      this.$emit('changeText', this.value);
+    }
+  },
+  watch: {
+    text(newValue, value) {
+      this.value = newValue;
     }
   }
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .input-text {
   cursor: pointer;
+  .text {
+    min-height: 30px;
+  }
 }
 </style>

@@ -48,3 +48,26 @@ export const delAccount = (parms) => ajax({
 	data: parms,
 	loading: true
 });
+
+// 获取菜单列表
+export const getMenuList = () => ajax({
+	url: '/api/getMenuList',
+	method: 'post',
+	loading: true
+});
+
+// 编辑菜单列表
+export const editMenu = (parms) => ajax({
+	url: '/api/editMenu',
+	method: 'post',
+	data: parms,
+	loading: true
+});
+
+// 删除菜单
+export const delMenu = (parms) => ajax({
+	url: '/api/delMenu',
+	method: 'post',
+	data: parms,
+	loading: true
+});
