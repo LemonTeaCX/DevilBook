@@ -7,6 +7,7 @@
           background-color="#202427"
           text-color="#fff"
           active-text-color="#ffd04b">
+          
           <el-submenu v-for="(menu01, index01) in $store.state.menu" :key="menu01.id" :index="menu01.id + ''">
             <template slot="title">
               <i :class="menu01.icon"></i>
@@ -32,8 +33,12 @@
               {{userInfo.username}}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item><i class="el-icon-edit-outline"></i> 修改密码</el-dropdown-item>
-              <el-dropdown-item divided command="loginOut"><i class="el-icon-back"></i> 退出登录</el-dropdown-item>
+              <el-dropdown-item command="editInfo">
+                <i class="el-icon-edit-outline"></i> 修改信息
+              </el-dropdown-item>
+              <el-dropdown-item divided command="loginOut">
+                <i class="el-icon-back"></i> 退出登录
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -74,12 +79,18 @@ export default {
     },
     userCommand(command) {
       switch (command) {
+        case 'editInfo':
+          this.editInfo();
+          break;
         case 'loginOut':
           this.loginOut();
           break;
         default:
           break;
       }
+    },
+    editInfo() {
+      this.$router.push('/edit');
     },
     loginOut() {
       window.localStorage.setItem('userInfo', '');
@@ -118,6 +129,9 @@ export default {
 .logo {
   height: 80px;
   color: #fff;
+  text-align: center;
+  font-size: 22px;
+  line-height: 80px;
 }
 .main-nav {
   display: flex;
