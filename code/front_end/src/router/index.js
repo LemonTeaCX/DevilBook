@@ -2,11 +2,13 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Index from '../pages/index'
+import Home from '../pages/home'
 import Login from '../pages/login'
 import Register from '../pages/register'
+import Edit from '../pages/edit'
 import Account from '../pages/system/account'
 import AccountEdit from '../pages/system/accountEdit'
-import Auth from '../pages/system/auth'
+import Menu from '../pages/system/menu'
 import BlogList from '../pages/blogs/blogList'
 import BlogDetail from '../pages/blogs/blogDetail'
 import CompList from '../pages/blogs/compList'
@@ -21,6 +23,10 @@ export default new Router({
       component: Index,
       children: [
         {
+          path: '/home',
+          component: Home
+        },
+        {
           path: '/system/account',
           component: Account
         },
@@ -29,8 +35,8 @@ export default new Router({
           component: AccountEdit
         },
         {
-          path: '/system/auth',
-          component: Auth
+          path: '/system/menu',
+          component: Menu
         },
         {
           path: '/blogs/blogList',
@@ -57,6 +63,10 @@ export default new Router({
     {
       path: '/register',
       component: Register
+    },
+    {
+      path: '/edit',
+      component: Edit
     }
   ]
 });
