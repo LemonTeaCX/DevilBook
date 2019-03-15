@@ -33,8 +33,8 @@
             </el-form-item>
             <el-form-item label="性别" prop="sex">
               <el-radio-group v-model="registerForm.sex">
-                <el-radio label="1">男</el-radio>
-                <el-radio label="2">女</el-radio>
+                <el-radio :label="1">男</el-radio>
+                <el-radio :label="2">女</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="备注" prop="remark">
@@ -57,7 +57,7 @@
 import Valid from '../util/valid';
 import { register } from '../api';
 export default {
-  name: 'register',
+  name: 'Register',
   data() {
     let { isPhone } = Valid;
     let validPass = (rule, value, callback) => {
@@ -86,7 +86,7 @@ export default {
         checkPassword: '',
         phone: '',
         email: '',
-        sex: '1',
+        sex: 1,
         remark: ''
       },
       rules: {
@@ -104,7 +104,7 @@ export default {
         ],
         phone: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
-          { validator: isPhone, message: '请输入正确的手机号码1', trigger: 'blur' }
+          { validator: isPhone, message: '请输入正确的手机号码', trigger: 'blur' }
         ],
         email: [
           { required: false, message: '请输入邮箱', trigger: 'blur' },
