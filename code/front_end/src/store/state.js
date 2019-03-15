@@ -1,6 +1,6 @@
 export default {
 	menu: [],
-	userInfo: JSON.parse(window.localStorage.getItem('userInfo')) || {},
+	userInfo: window.localStorage.getItem('userInfo') ? JSON.parse(window.localStorage.getItem('userInfo')) : {},
 	authList: [],
 	roleList: []
 }
