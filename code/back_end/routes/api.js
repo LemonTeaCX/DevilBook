@@ -194,6 +194,20 @@ router.post('/delAccount', (req, res, next) => {
 	});
 });
 
+// 获取菜单列表
+router.post('/getMenuList', (req, res, next) => {
+ 	let sql = `SELECT * FROM menu;`;
+
+	connection.query(sql, (error, results, fields) => {
+	  if (error) throw error;
+
+	  return res.json(mergeRes({
+	  	result: true,
+	  	data: results
+	  }));
+	});
+});
+
 // 登录
 router.post('/login', (req, res, next) => {
 	let {
@@ -257,6 +271,43 @@ router.post('/register', (req, res, next) => {
 	  connection.query(sql02, (error, results, fields) => {
 	  	return res.json(mergeRes({
 	  		msg: '注册成功',
+				result: true
+	  	}));
+	  });
+	});
+});
+
+// 修改信息
+router.post('/edit', (req, res, next) => {
+	let {
+		id,
+		originalPassword,
+		password,
+		phone,
+		email,
+		sex,
+		remark
+	} = req.body;
+
+	originalPassword = md5(originalPassword);
+	password = md5(password);
+
+	let sql01 = `SELECT * FROM user WHERE(id = ${id});`;
+
+	connection.query(sql01, (error, results, fields) => {
+	  if (error) throw error;
+
+	  if (originalPassword !== results[0].password) {
+	  	return res.json(mergeRes({
+	  		msg: '原密码错误，请重新输入',
+				result: false
+	  	}));
+	  };
+
+	  let sql02 = `UPDATE user SET password='${password}', phone='${phone}', email='${email}', sex=${sex}, remark='${remark}';`;
+	  connection.query(sql02, (error, results, fields) => {
+	  	return res.json(mergeRes({
+	  		msg: '修改信息成功',
 				result: true
 	  	}));
 	  });
