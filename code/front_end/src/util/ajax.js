@@ -8,7 +8,8 @@ let { getCookie } = Util;
 let loadingUtil = new LoadingUtil();
 
 axios.defaults.timeout = 30000;
-axios.defaults.baseURL ='http://localhost:3000';
+// axios.defaults.baseURL ='http://localhost:3000';
+axios.defaults.baseURL ='http://47.112.202.211:3000';
 axios.defaults.withCredentials = true;
 
 //http request 拦截器
