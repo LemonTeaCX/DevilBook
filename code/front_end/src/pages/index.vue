@@ -4,10 +4,14 @@
       <div class="logo">logo</div>
       <div class="menu">
         <el-menu
+          :default-active="homeMenu.id + ''"
           background-color="#202427"
           text-color="#fff"
           active-text-color="#ffd04b">
-          
+          <el-menu-item :index="homeMenu.id + ''" @click="selectMenu(homeMenu)">
+            <i :class="homeMenu.icon"></i>
+            <span slot="title">{{homeMenu.menu}}</span>
+          </el-menu-item>
           <el-submenu v-for="(menu01, index01) in $store.state.menu" :key="menu01.id" :index="menu01.id + ''">
             <template slot="title">
               <i :class="menu01.icon"></i>
@@ -63,11 +67,20 @@ export default {
     return {
       curMenu: {
         menu: '首页'
+      },
+      homeMenu: {
+        id: 1,
+        parent_id: 0,
+        menu: '首页',
+        icon: 'el-icon-location',
+        path: '/home',
+        remark: ''
       }
     }
   },
   mounted() {
     this.$store.dispatch('setMenu');
+    this.$router.push(this.homeMenu.path);
   },
   computed: {
     ...mapState(['userInfo'])
@@ -120,6 +133,7 @@ export default {
     background: #121212;
   }
   .main-right {
+    position: relative;
     /*这里需要设置一个宽度数值，防止内容里的elementUI table组件最外层无法获取正确100%宽度*/
     /*flex: 1;*/
     width: calc(100% - 210px);
@@ -135,9 +149,20 @@ export default {
 }
 .main-nav {
   display: flex;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
   height: 50px;
+  background: #fff;
   line-height: 50px;
   box-shadow: 0 0 10px #000;
+}
+.main-page {
+  overflow-y: auto;
+  height: calc(100% - 50px);
+  margin-top: 50px;
 }
 .menu-nav {
   padding: 0 18px;
@@ -157,12 +182,8 @@ export default {
   border-left: 1px solid #ddd;
   cursor: pointer;
 }
-.main-page {
-  overflow-y: auto;
-  height: calc(100% - 50px);
-}
 
-.el-menu {
+.menu .el-menu {
   border-right: 0;
 }
 </style>

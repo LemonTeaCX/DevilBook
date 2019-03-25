@@ -5,7 +5,8 @@
       <el-col class="login-main" :offset="6" :span="12">
         <el-row>
           <el-col :span="14">
-            <div class="login-desc">this is 描述</div>
+            <div class="login-welcome"><h1>Welcome</h1></div>
+            <p class="login-desc" v-html="loginDesc"></p>
           </el-col>
           <el-col :span="10">
               <el-form :model="loginForm" :rules="rules" ref="loginForm" class="login-box">
@@ -19,7 +20,7 @@
                 </el-form-item>
                 <el-row class="login-else">
                   <el-col :span="12">
-                    <el-button type="text">忘记密码</el-button>
+                    <el-button type="text" @click="forget">忘记密码</el-button>
                   </el-col>
                   <el-col :span="12" class="tar">
                     <el-button type="text" @click="register">注册</el-button>
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-import { login } from '../api';
+import { login, getDescText } from '../api';
 import Util from '../util/util';
 
 let { setCookie } = Util;
@@ -45,6 +46,7 @@ export default {
   name: 'Login',
   data() {
     return {
+      loginDesc: '这是网站描述',
       loginBtnLoading: false,
       loginForm: {
         user: '',
@@ -60,7 +62,14 @@ export default {
       }
     };
   },
+  mounted() {
+    this.getDesc();
+  },
   methods: {
+    async getDesc() {
+      let res = await getDescText();
+      this.loginDesc = res.data.text;
+    },
     async login() {
       let _this = this,
         isValid = await this.validForm();
@@ -90,6 +99,12 @@ export default {
     },
     register() {
       this.$router.push('/register');
+    },
+    forget() {
+      this.$message({
+        message: '暂时没有该功能，请认真想想......',
+        type: 'warning'
+      });
     }
   }
 }
@@ -107,6 +122,19 @@ export default {
 }
 .login-main {
   padding-top: 100px;
+}
+.login-welcome {
+  margin: 20px 0;
+  color: yellowgreen;
+  font-size: 30px;
+}
+.login-desc {
+  padding-right: 80px;
+  line-height: 2;
+  color: #fff;
+  a {
+    color: skyblue;
+  }
 }
 .login-box {
   background: #fafbfc;

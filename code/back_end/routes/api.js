@@ -24,6 +24,20 @@ router.get('/', (req, res, next) => {
 	return;
 });
 
+// 获取登录页网站描述信息
+router.get('/getDescText', (req, res, next) => {
+	let sql = `SELECT * FROM texts WHERE(id = 1);`;
+
+	connection.query(sql, (error, results, fields) => {
+		if (error) throw error;
+
+		return res.json(mergeRes({
+			data: results[0],
+			result: true
+		}));
+	});
+});
+
 // 获取菜单
 router.post('/getMenu', (req, res, next) => {
  	let sql = `SELECT * FROM menu;`;
@@ -36,6 +50,67 @@ router.post('/getMenu', (req, res, next) => {
 	  	result: true,
 	  	data: menuArr
 	  }));
+	});
+});
+
+// 获取作者信息
+router.post('/getAuthorInfo', (req, res, next) => {
+	let sqlAuthor = `SELECT * FROM author;`,
+		sqlEducations = `SELECT * FROM educations;`,
+		sqlExperiences = `SELECT * FROM experiences;`;
+
+	connection.query(sqlAuthor + sqlEducations + sqlExperiences, (error, results, fields) => {
+		if (error) throw error;
+
+		let data = results[0] && results[0][0] ? results[0][0] : {};
+		data.educations = results[1] || [];
+		data.experiences = results[2] || [];
+		return res.json(mergeRes({
+			result: true,
+			data: data
+		}));
+	});
+});
+
+// 获取框架信息
+router.post('/getFrames', (req, res, next) => {
+	let sql = `SELECT * FROM frames;`;
+
+	connection.query(sql, (error, results, fields) => {
+		if (error) throw error;
+
+		return res.json(mergeRes({
+			result: true,
+			data: results
+		}));
+	});
+});
+
+// 获取语言信息
+router.post('/getLanguages', (req, res, next) => {
+	let sql = `SELECT * FROM languages;`;
+
+	connection.query(sql, (error, results, fields) => {
+		if (error) throw error;
+
+		return res.json(mergeRes({
+			result: true,
+			data: results
+		}));
+	});
+});
+
+// 获取技能信息
+router.post('/getSkills', (req, res, next) => {
+	let sql = `SELECT * FROM skills;`;
+
+	connection.query(sql, (error, results, fields) => {
+		if (error) throw error;
+
+		return res.json(mergeRes({
+			result: true,
+			data: results
+		}));
 	});
 });
 

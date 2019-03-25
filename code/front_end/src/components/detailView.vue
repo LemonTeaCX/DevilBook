@@ -17,7 +17,8 @@
         :defaultOpen="editor.defaultOpen"
         :toolbarsFlag="editor.toolbarsFlag" 
         :editable="editor.editable" 
-        :subfield="editor.subfield"/>
+        :subfield="editor.subfield"
+        :codeStyle="editor.codeStyle"/>
     </div>
   </div>
 </template>
@@ -28,11 +29,12 @@ export default {
   data() {
     return {
       editor: {
-        externalLink: false,
+        externalLink: true,
         defaultOpen: 'preview',
         toolbarsFlag: false,
         editable: false,
-        subfield: false
+        subfield: false,
+        codeStyle: 'code-atom-one-dark'
       },
     }
   },

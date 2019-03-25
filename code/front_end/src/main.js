@@ -11,10 +11,10 @@ import 'mavon-editor/dist/css/index.css'
 
 // require('./mock/index.js');
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 Vue.use(ElementUI);
-Vue.use(mavonEditor)
+Vue.use(mavonEditor);
 
 /* eslint-disable no-new */
 new Vue({
@@ -23,4 +23,4 @@ new Vue({
   store,
   components: { App },
   template: '<App/>'
-})
+});

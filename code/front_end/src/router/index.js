@@ -16,7 +16,8 @@ import CompDetail from '../pages/blogs/compDetail'
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
+  // mode: 'history',
   routes: [
     {
       path: '/',
@@ -70,3 +71,14 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (window._hmt) {
+    if (to.path) {
+      window._hmt.push(['_trackPageview', '/#' + to.fullPath]);
+    }
+  }
+  next();
+});
+
+export default router;

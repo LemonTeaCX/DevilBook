@@ -27,7 +27,7 @@
     </el-row>
     <el-row class="tip-box">
       <el-alert
-        title="这里是温馨提示信息"
+        title="在这里你可以管理本用户账号下的子账号，进行添加，删除，修改，查询等操作。"
         type="warning"
         show-icon
         :closable="false">
