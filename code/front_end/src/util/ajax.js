@@ -2,17 +2,22 @@ import axios from 'axios';
 import router from '../router';
 import Util from '../util/util';
 import LoadingUtil from './loading';
-import { Message, version } from 'element-ui';
+import { Message } from 'element-ui';
 
 let { getCookie } = Util;
 let loadingUtil = new LoadingUtil();
 
-axios.defaults.timeout = 30000;
-axios.defaults.baseURL = process.env.BASE_URL;
-axios.defaults.withCredentials = true;
+const axiosInstance = axios.create({
+  baseURL: process.env.BASE_URL,
+  timeout: 30000,
+  withCredentials: true,
+  headers: {
+    'Auth-Token': getCookie('token') || ''
+  }
+});
 
 //http request 拦截器
-axios.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   config => {
     if (config.loading) loadingUtil.startLoading();
     return config;
@@ -23,13 +28,13 @@ axios.interceptors.request.use(
 );
 
 //http response 拦截器
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   response => {
-    loadingUtil.endLoading();
+    loadingUtil && loadingUtil.endLoading();
     return response.data;
   },
   error => {
-    loadingUtil.endLoading();
+    loadingUtil && loadingUtil.endLoading();
 
     if (error.response && error.response.status === 401) {
       // 没权限、登录过期
@@ -50,14 +55,13 @@ axios.interceptors.response.use(
 
 export default function ajax(options) {
   return new Promise((resolve, reject) => {
-    let config = Object.assign({
-      method: 'get',
-      headers: {
-        'Auth-Token': getCookie('token')
-      }
-    }, options);
 
-    axios(config)
+    let config = {
+      method: 'get',
+      ...options
+    };
+
+    axiosInstance(config)
     .then(response => {
       resolve(response);
     })

@@ -1,11 +1,16 @@
-let express = require('express');
-let router = express.Router();
-let connection = require('../db/db');
-let Util = require('../util/util');
-let md5 = require("blueimp-md5");
-let token = require('../util/token');
+const express = require('express');
+const router = express.Router();
+const connection = require('../db/db');
+const Util = require('../util/util');
+const md5 = require("blueimp-md5");
+const token = require('../util/token');
+const admins = ['lemon'];
+const vaildAdmin = (tokenStr) => {
+	let user = token.verifyToken(tokenStr).user || '';
+	return admins.indexOf(user) !== -1;
+};
 
-let {
+const {
 	copyJson, 
 	treeMenu
 } = Util;
@@ -15,7 +20,7 @@ let resWrap = {
 	"msg": "",
 	"result": false
 };
-let mergeRes = (json, ...moreJson) => {
+const mergeRes = (json, ...moreJson) => {
 	return Object.assign(copyJson(resWrap), json, ...moreJson);
 };
 
@@ -40,7 +45,7 @@ router.get('/getDescText', (req, res, next) => {
 
 // 获取菜单
 router.post('/getMenu', (req, res, next) => {
- 	let sql = `SELECT * FROM menu;`;
+	let sql = `SELECT * FROM menu;`;
 
 	connection.query(sql, (error, results, fields) => {
 	  if (error) throw error;
@@ -285,6 +290,13 @@ router.post('/getMenuList', (req, res, next) => {
 
 // 编辑菜单
 router.post('/editMenu', (req, res, next) => {
+	if (!vaildAdmin(req.get('Auth-Token') || '')) {
+		return res.json(mergeRes({
+			result: false,
+			msg: '该账号无权限编辑菜单'
+		}));
+	}
+
 	let menus = req.body;
 	let sqlValues = [];
 	menus.forEach(item => {
@@ -305,6 +317,13 @@ router.post('/editMenu', (req, res, next) => {
 
 // 删除菜单
 router.post('/delMenu', (req, res, next) => {
+	if (!vaildAdmin(req.get('Auth-Token') || '')) {
+		return res.json(mergeRes({
+			result: false,
+			msg: '该账号无权限删除菜单'
+		}));
+	}
+
 	let { ids } = req.body;
 	ids = ids.join(',');
  	let sql = `DELETE FROM menu WHERE(id in (${ids}));`;

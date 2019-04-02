@@ -13,8 +13,8 @@ let apiRouter = require('./routes/api');
 let app = express();
 
 app.all('/api/*', (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:8080");
-  // res.header("Access-Control-Allow-Origin", "http://devilcx.com:3000");
+  // res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+  res.header("Access-Control-Allow-Origin", "http://devilcx.com:3000");
   res.header("Access-Control-Allow-Headers", "X-Requested-With,Content-Type,Auth-Token");
   res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
   res.header("Content-Type", "application/json;charset=utf-8");

@@ -34,9 +34,9 @@
       </el-alert>
     </el-row>
     <el-row class="table-box">
+      <!--:height="tableHeight"-->
       <el-table
         :data="tableData"
-        :height="tableHeight"
         @selection-change="checkedChange"
         border
         highlight-current-row
